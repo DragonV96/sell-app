@@ -28,6 +28,7 @@
         } else {
           this.food.count++;
         }
+        this.$dispatch('cart.add', event.target);
       },
       decreaseCart(event) {
         // 防止pc端点击一次出现多次点击效果
