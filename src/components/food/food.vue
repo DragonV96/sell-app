@@ -53,6 +53,7 @@
 <script type="text/ecmascript-6">
   import BScroll from 'better-scroll';
   import Vue from 'vue';
+  import {formatDate} from 'common/js/date';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
   import split from 'components/split/split';
   import ratingselect from 'components/ratingselect/ratingselect';
@@ -83,7 +84,7 @@
       show() {
         this.showFlag = true;
         this.selectType = ALL;
-        this.onlyContent = true;
+        this.onlyContent = false;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$els.food, {
@@ -116,7 +117,7 @@
       }
     },
     events: {
-      'ratingType.select'(type) {
+      'ratingtype.select'(type) {
         this.selectType = type;
         this.$nextTick(() => {
           this.scroll.refresh();
@@ -131,7 +132,8 @@
     },
     filters: {
       formatDate(time) {
-        // let date = new Date(time);
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
       }
     },
     components: {
