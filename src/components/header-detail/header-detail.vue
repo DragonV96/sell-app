@@ -143,9 +143,9 @@
             font-size: $fontsize-small
     .detail-close
       position: relative
-      width: 32px
-      height: 32px
+      width: 30px
+      height: 30px
       margin: -64px auto 0 auto
       clear: both
-      font-size: 32px
+      font-size: $fontsize-large-xxxx
 </style>
