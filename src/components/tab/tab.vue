@@ -6,8 +6,7 @@
       v-model="selectedLabel"
       :data="tabs"
       ref="tabBar"
-      class="border-bottom-1px"
-    >
+      class="border-bottom-1px">
     </cube-tab-bar>
     <div class="slide-wrapper">
       <cube-slide
@@ -18,8 +17,7 @@
         ref="slide"
         @change="onChange"
         @scroll="onScroll"
-       :options="slideOptions"
-      >
+       :options="slideOptions">
         <cube-slide-item v-for="(tab,index) in tabs" :key="index">
           <component :is="tab.component" :data="tab.data" ref="component"></component>
         </cube-slide-item>

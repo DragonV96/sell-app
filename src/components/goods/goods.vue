@@ -5,14 +5,12 @@
         :side=true
         :data="goods"
         :options="scrollOptions"
-        v-if="goods.length"
-      >
+        v-if="goods.length">
         <cube-scroll-nav-panel
           v-for="good in goods"
           :key="good.name"
           :label="good.name"
-          :title="good.name"
-        >
+          :title="good.name">
           <ul>
             <li v-for="food in good.foods" :key="food.name" class="food-item">
               <div class="icon">
@@ -28,22 +26,31 @@
                   <span class="now">¥{{food.price}}</span>
                   <span class="past" v-show="food.oldPrice">¥{{food.oldPrice}}</span>
                 </div>
-<!--                <div class="cartcontrol-wrapper">-->
-<!--                  <cartcontrol :food="food"></cartcontrol>-->
-<!--                </div>-->
+                <div class="cartcontrol-wrapper">
+                  <cart-control @add="onAdd" :food="food"></cart-control>
+                </div>
               </div>
             </li>
           </ul>
         </cube-scroll-nav-panel>
       </cube-scroll-nav>
     </div>
-<!--    <shopcart v-ref:shopcart :select-foods="selectFoods" :delivery-price="seller.deliveryPrice" :min-price="seller.minPrice"></shopcart>-->
+    <div class="shop-cart-wrapper">
+      <shop-cart
+        ref="shopCart"
+        :select-foods="selectFoods"
+        :delivery-price="seller.deliveryPrice"
+        :min-price="seller.minPrice">
+      </shop-cart>
+    </div>
   </div>
 <!--  <food :food="selectedFood" v-ref:food></food>-->
 </template>
 
 <script>
   import { getGoods } from 'api'
+  import ShopCart from 'components/shop-cart/shop-cart'
+  import CartControl from 'components/cart-control/cart-control'
 
   export default {
     name: 'goods',
@@ -64,12 +71,35 @@
         }
       }
     },
+    computed: {
+      seller() {
+        return this.data.seller
+      },
+      selectFoods() {
+        let ret = []
+        this.goods.forEach((goods) => {
+          goods.foods.forEach((food) => {
+            if (food.count) {
+              ret.push(food)
+            }
+          })
+        })
+        return ret
+      }
+    },
     methods: {
       fetch() {
         getGoods().then((goods) => {
           this.goods = goods
         })
+      },
+      onAdd(el) {
+        this.$refs.shopCart.drop(el)
       }
+    },
+    components: {
+      ShopCart,
+      CartControl
     }
   }
 </script>
@@ -168,4 +198,11 @@
         position: absolute
         right: 0
         bottom: 12px
+    .shop-cart-wrapper
+      position: absolute
+      left: 0
+      bottom: 0
+      z-index: 50
+      width: 100%
+      height: 48px
 </style>
