@@ -21,7 +21,7 @@
        :options="slideOptions"
       >
         <cube-slide-item v-for="(tab,index) in tabs" :key="index">
-          <component :is="tab.component" :data="tab.data"></component>
+          <component :is="tab.component" :data="tab.data" ref="component"></component>
         </cube-slide-item>
       </cube-slide>
     </div>
@@ -35,7 +35,7 @@
       tabs: {
         type: Array,
         default() {
-          return {}
+          return []
         }
       },
       initialIndex: {
@@ -65,9 +65,14 @@
         }
       }
     },
+    mounted() {
+      this.onChange(this.index)
+    },
     methods: {
       onChange(current) {
         this.index = current
+        const component = this.$refs.component[current]
+        component.fetch && component.fetch()
       },
       onScroll(pos) {
         // 上方标题组件宽度
