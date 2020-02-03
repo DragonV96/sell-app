@@ -34,12 +34,14 @@
 
 <script>
   import CartControl from 'components/cart-control/cart-control'
+  import popup from 'common/mixins/popup'
 
-  const EVENT_HIDE = 'hide'
   const EVENT_LEAVE = 'leave'
   const EVENT_ADD = 'add'
+  const EVENT_SHOW = 'show'
 
   export default {
+    mixins: [popup],
     name: 'shop-cart-list',
     props: {
       selectFoods: {
@@ -49,22 +51,14 @@
         }
       }
     },
-    data() {
-      return {
-        visible: false
-      }
-    },
-    methods: {
-      show() {
-        this.visible = true
+    created() {
+      this.$on(EVENT_SHOW, () => {
         this.$nextTick(() => {
           this.$refs.listContent.refresh()
         })
-      },
-      hide() {
-        this.visible = false
-        this.$emit(EVENT_HIDE)
-      },
+      })
+    },
+    methods: {
       onLeave() {
         this.$emit(EVENT_LEAVE)
       },
