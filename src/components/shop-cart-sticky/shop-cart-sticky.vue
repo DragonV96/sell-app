@@ -53,6 +53,9 @@
       },
       hide() {
         this.visible = false
+      },
+      drop(el) {
+        this.$refs.shopCart.drop(el)
       }
     },
     components: {

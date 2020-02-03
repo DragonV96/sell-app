@@ -14,7 +14,7 @@
         <div class="desc">另需配送费¥{{deliveryPrice}}元</div>
       </div>
       <div class="content-right">
-        <div class="pay" :class="payClass">
+        <div class="pay" :class="payClass" @click="pay">
           {{payDesc}}
         </div>
       </div>
@@ -167,6 +167,16 @@
           this._hideShopCartList()
         }
       },
+      pay(e) {
+        if (this.totalPrice < this.minPrice) {
+          return
+        }
+        this.$createDialog({
+          title: '支付',
+          content: `您一共需要支付¥${this.totalPrice}元`
+        }).show()
+        e.stopPropagation()
+      },
       _showShopCartList() {
         this.shopCartListComp = this.shopCartListComp || this.$createShopCartList({
           $props: {
@@ -178,6 +188,9 @@
             },
             leave: () => {
               this._hideShopCartSticky()
+            },
+            add: (el) => {
+              this.shopCartStickyComp.drop(el)
             }
           }
         })
@@ -196,16 +209,21 @@
         this.shopCartStickyComp.show()
       },
       _hideShopCartList() {
-        const comp = this.sticky ? this.$parent.list.hide() : this.shopCartListComp
-        comp.hide && comp.hide()
+        const list = this.sticky ? this.$parent.list : this.shopCartListComp
+        list.hide && list.hide()
       },
       _hideShopCartSticky() {
-        this.shopCartListComp.hide()
+        this.shopCartStickyComp.hide()
       }
     },
     watch: {
       fold(newVal) {
         this.listFold = newVal
+      },
+      totalCount(count) {
+        if (!this.listFold && !count) {
+          this._hideShopCartList()
+        }
       }
     },
     components: {
