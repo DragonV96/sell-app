@@ -65,7 +65,6 @@
       </shop-cart>
     </div>
   </div>
-<!--  <food :food="selectedFood" v-ref:food></food>-->
 </template>
 
 <script>
