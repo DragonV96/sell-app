@@ -11,6 +11,8 @@
     "axios": "^0.19.2",
     "core-js": "^3.4.4",
     "moment": "^2.22.2",
+    "query-string": "^6.1.0",
+    "good-storage": "^1.0.1",
     "cube-ui": "~1.12.15",
     "vue": "^2.6.10"
   },
